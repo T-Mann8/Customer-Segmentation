@@ -9,15 +9,52 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Customer Segmentation
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This report will document the process of conducting a customer segmentation analysis and follow the structure stated below:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+If translated into a client deck:
+1 - Introduction
+  Introduce purpose and context
+  Brief overview of business in question
+  Explanation of importance of analysis
+2 - Objective and Methodology
+  State the specific objective of the analysis
+  (What type of customer segmentation)
+  Describe methodology
+    clustering algorithms, decision trees, statistical techniques
+  Briefly explain data sources, variables used and preprocessing
+3 - Data Exploration
+  Present key findings from EDA
+  Highlight important insights about behavior, preferences or patterns
+  Use visualizations or summary statistics to support findings
+4 -  Segmentation Results
+  Present results of segmentation analysis
+  Describe the identified segments and their characteristics
+  Display visual representations of segments such as cluster plots or decision trees to help visualize differences
+5 - Segment Profiles
+  Provide detailed profiles of each segment
+  Discuss unique traits/behaviors/preferences of each segment
+  Include relevant metrics or stats that distinguish segments
+6 - Segment-specific insights and Recommendations
+  Share actionable insights and recs for each segment
+  Highlight opportunities for targeted marketing, personalized experiences or product/service customization
+  Discuss strategies to improve customer satisfaction, retention or engagement for each segment
+7 - Summary and Conclusion
+  Recap the main findings of the customer segmentation analysis
+  Emphasize the value of the insights gained and their potential impact on business outcomes
+  Conclude with call to action or next steps for leveraging insights
+8 - Q&A and Discussion
+  Allocate time for questions, comments and discussion
+  Be prepared to explain any technical aspects, assumptions or limitations of analysis
+  
 
-```{r cars}
-#Summary of Cars Distance Data 
-summary(cars$dist)
+
+```{r data}
+
+
+
 ```
 
 ## Including Plots
