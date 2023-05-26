@@ -14,6 +14,68 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This report will document the process of conducting a customer segmentation analysis and follow the structure stated below:
 
+Types of Customer Segmentation Analyses:
+1 - Demographic (age, gender, income)
+2 - Behavioral (purchasing patterns, freq, AOV, churn)
+3 - Psychographic - underlying motives, values, interests
+4 - Lifestyle - lifestyles or life stages
+5 - Channel Preference
+6 - Purchase Journey - touchpoints or pipelines pts
+7 - Customer Lifetime Value - high val vs low customers
+8 - Product Usage - category grouping
+9 - Customer Satisfaction - based on reviews
+10 - Customer Preferences - based on prefs on pricing, promotions or delivery options. 
+
+Exploratory Data Analysis:
+1 - Overview of Data
+2 - Tx Volume
+3 - Popular Products
+4 - Customer Behavior
+5 - Revenue Analysis
+6 - Purchase Patterns
+7 - Basket Size and Combos
+8 - Customer Segmentation
+9 - Data Quality and Completeness
+
+Checklist for Data Cleaning
+1 - Validate Data Format
+  Ensure correct data types and no bad formatting
+2 - Handle Missing Values
+  Decide on approach for missing values
+    Mean, median, mode, regression, row deletion
+3 - Remove Duplicates
+4 - Cleanse Outliers
+  Decide on approach to outlier values
+    Remove or transform or otherwise
+5 - Standardize Data
+  Check if data needs standardization or normalization
+
+Checklist for EDA
+1 - Identify Variables
+2 - Univariate Analysis
+  Analyze distribution, central tendency (mean, median), variability (stdev, range) and outliers / unusuals
+3 - Bivariate Analysis
+  Explore relationship between variables
+  Scatterplots, correlation tables, cross-tabulations
+4 - Missing Data Analysis
+  Examine missingness and determine approach to resolution
+5 - Outlier Detection
+  Similar to above but for outliers
+6 - Data Visualization
+  Histograms, box plots, bar charts, scatter plots, etc.
+7 - Feature Engineering
+  New variables, scaling variables, deriving variables
+8 - Multivariate Analysis
+  PCA, factor analysis, cluster analysis, etc.
+  1 - Dimension Reduction - PCA
+  2 - Correlation and Covariance Analysis
+  3 - Clustering Analysis
+    K-means to identify natural groupings
+  4 - Discriminant Analysis - LDA for classification
+9 - Statistical Modeling
+  Regression analysis, hyp testing, ANOVA
+  
+
 If translated into a client deck:
 1 - Introduction
   Introduce purpose and context
@@ -49,21 +111,55 @@ If translated into a client deck:
   Allocate time for questions, comments and discussion
   Be prepared to explain any technical aspects, assumptions or limitations of analysis
   
-
+Statistical Tests
+1 - T-test
+    comparing means between segments
+    example - time spent in shopping cart btwn groups
+2 - ANOVA
+    analysis of variance
+    determine if signif differences in variability btwn groups
+3 - chi square
+    with categorical vars
+    assess if signif association btwn cat vars across diff segs
+4 - propensity score matching
+    compare effect of specific treatment 
+    match individuals in different groups with similar propensity scores for more reliable cross-seg comparison
+  
+### Data Import
 
 ```{r data}
+library(data.table)
+library(lubridate)
+library(dplyr)
+#install.packages("summarytools")
+library(summarytools)
+library(tidyverse)
+library(ggplot2)
 
+customer_data <- read_csv("Customer_Dataset_Data.csv")
 
 
 ```
 
-## Including Plots
+## Data Review and Cleaning
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-#Plot of Pressure and second! test of Git
-plot(pressure)
+```{r, echo=FALSE}
+#
+
+```
+
+### SummaryTools()
+```{r}
+## SummaryTools()
+#freq()
+  #descr()
+  #ctable()
+  #compareGroups()
+  #descrTable()
+  #freq.poly()
+  #dfSummary()
+
 ```
 
 
