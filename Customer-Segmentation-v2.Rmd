@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This report will document the process of conducting a customer segmentation analysis and follow the structure stated below:
 
-Types of Customer Segmentation Analyses:
+### Types of Customer Segmentation Analyses:
 1 - Demographic (age, gender, income)
 2 - Behavioral (purchasing patterns, freq, AOV, churn)
 3 - Psychographic - underlying motives, values, interests
@@ -26,7 +26,7 @@ Types of Customer Segmentation Analyses:
 9 - Customer Satisfaction - based on reviews
 10 - Customer Preferences - based on prefs on pricing, promotions or delivery options. 
 
-Exploratory Data Analysis:
+### Exploratory Data Analysis:
 1 - Overview of Data
 2 - Tx Volume
 3 - Popular Products
@@ -37,7 +37,7 @@ Exploratory Data Analysis:
 8 - Customer Segmentation
 9 - Data Quality and Completeness
 
-Checklist for Data Cleaning
+### Checklist for Data Cleaning
 1 - Validate Data Format
   Ensure correct data types and no bad formatting
 2 - Handle Missing Values
@@ -50,7 +50,7 @@ Checklist for Data Cleaning
 5 - Standardize Data
   Check if data needs standardization or normalization
 
-Checklist for EDA
+### Checklist for EDA
 1 - Identify Variables
 2 - Univariate Analysis
   Analyze distribution, central tendency (mean, median), variability (stdev, range) and outliers / unusuals
@@ -76,7 +76,7 @@ Checklist for EDA
   Regression analysis, hyp testing, ANOVA
   
 
-If translated into a client deck:
+### If translated into a client deck:
 1 - Introduction
   Introduce purpose and context
   Brief overview of business in question
@@ -141,13 +141,97 @@ customer_data <- read_csv("Customer_Dataset_Data.csv")
 
 ```
 
-## Data Review and Cleaning
+## Data Review
+
+Region is number range 1-5, probably fine
+
+TownSize also a number range 1-5, has 2 NAs
+
+Gender is a character... can fix
+
+Age is a number, range 18 - 79, should be considered for segmentation
+
+Education ranges from 6 to 23
+
+JobCat is a character
+
+Union Member is character, could be binary?
+
+Retired could be converted to binary
+
+HHIncome needs to be converted to number AND validated afterwards
+
+Look into the ...15 column
+
+LoanDefault could be binary
+
+MaritalStatus could be binary
+
+There are some more NAs after this Var!
+
+HomeOwner could be binary and has NAs
+
+CarValue could be number
+
+CreditSpendMonth could be number
+
+VoiceLastMonth == DataOverTenure could ALL be converted into numerical shape
+
+Some of the following variables appear to be character cols that could be converted into Binary variables
 
 
 ```{r, echo=FALSE}
-#
+
+summary(customer_data)
 
 ```
+
+## Data Cleaning
+
+### Data Types
+
+```{r}
+
+
+
+```
+
+
+### Missing Values
+
+```{r}
+
+
+
+```
+
+
+### Duplicate Values
+
+```{r}
+
+
+
+```
+
+### Outliers
+
+```{r}
+
+
+
+```
+
+### Standardize
+
+```{r}
+
+
+
+```
+
+
+
 
 ### SummaryTools()
 ```{r}
