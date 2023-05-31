@@ -183,6 +183,10 @@ Some of the following variables appear to be character cols that could be conver
 ```{r, echo=FALSE}
 
 summary(customer_data)
+lapply(customer_data, class)
+head(customer_data)
+#dim(customer_data)
+##[1] 5000   60
 
 ```
 
@@ -191,7 +195,45 @@ summary(customer_data)
 ### Data Types
 
 ```{r}
+colnames(customer_data)[0:14]
+# [1] "CustomerID"        "Region"            "TownSize"          "Gender"            "Age"               "EducationYears"   
+# [7] "JobCategory"       "UnionMember"       "EmploymentLength"  "Retired"           "HHIncome"          "DebtToIncomeRatio"
+# [13] "CreditDebt"        "OtherDebt"
+summary(customer_data)[,0:14]
+summary(CD)[,0:14]
+cdclean <- CD
+nona <- CD[complete.cases(CD),]
 
+cdclean$HHIncome <- gsub("$","",as.character(cdclean$HHIncome))
+as.numeric(cdclean$HHIncome)
+gsub(".00","",as.character(cdclean$HHIncome))
+
+### EMOVE THE $ sign from HHINcome and then convert to numeric
+newHH <- str_sub(cdclean$HHIncome,2,-4)
+newHH <- gsub(",","",as.character(newHH))
+newnumHH <- as.numeric(newHH)
+newnumHH
+
+nona <- transform(nona, HHIncome = as.numeric(HHIncome))
+summary(nona)[,0:14]
+
+colnames(customer_data)[15:29]
+# [1] "...15"             "LoanDefault"       "MaritalStatus"     "HouseholdSize"     "NumberPets"        "NumberCats"       
+# [7] "NumberDogs"        "NumberBirds"       "HomeOwner"         "CarsOwned"         "CarOwnership"      "CarBrand"         
+# [13] "CarValue"          "CommuteTime"       "PoliticalPartyMem"
+summary(customer_data)[,15:29]
+
+colnames(customer_data)[30:44]
+#[1] "Votes"               "CreditCard"          "CardTenure"          "CardItemsMonthly"    "CardSpendMonth"     
+# [6] "ActiveLifestyle"     "PhoneCoTenure"       "VoiceLastMonth"      "VoiceOverTenure"     "EquipmentRental"    
+# [11] "EquipmentLastMonth"  "EquipmentOverTenure" "CallingCard"         "WirelessData"        "DataLastMonth"   
+summary(customer_data)[,30:44]
+
+colnames(customer_data)[45:60]
+# [1] "DataOverTenure"   "Multiline"        "VM"               "Pager"            "Internet"         "CallerID"        
+# [7] "CallWait"         "CallForward"      "ThreeWayCalling"  "EBilling"         "TVWatchingHours"  "OwnsPC"          
+# [13] "OwnsMobileDevice" "OwnsGameSystem"   "OwnsFax"          "NewsSubscriber"  
+summary(customer_data)[,45:60]
 
 
 ```
@@ -200,8 +242,67 @@ summary(customer_data)
 ### Missing Values
 
 ```{r}
+# DROP ...15
+CD <- customer_data[,c(1:14,16:60)]
+## SKIP TO NONA
+nona <- CD[complete.cases(CD),]
 
 
+# Select all the rows with NAs as a subset of total dataset
+CD_NA <- CD[!complete.cases(CD),]
+colnames(CD_NA)
+
+sapply(CD_NA, function(x) sum(is.na(x)))
+is.na(CD_NA)
+which(colSums(is.na(CD_NA))>0)
+
+freq(CD_NA, var = Gender)
+
+# DROP Number of Pets Variables
+cd2 <- CD[,c(1:17,22:59)]
+sapply(cd2, function(x) sum(is.na(x)))
+which(colSums(is.na(cd2))>0)
+freq(CD, var = TownSize) # MEAN REPLACE
+freq(cd2, var = Gender) # DROP
+freq(cd2, var = JobCategory) # MODE REPLACE
+freq(cd2, var = HouseholdSize) # MEAN REPLACE
+freq(cd2, var = HomeOwner) # MEAN REPLACE
+freq(cd2, var = CommuteTime) # MEAN REPLACE
+
+
+
+cd_new <- cd2
+
+CD$TownSize[is.na(CD$TownSize)] <- mean(CD$TownSize, na.rm = TRUE)
+
+cd_new$TownSize[is.na(cd2$TownSize)] <- mean(cd2$TownSize)
+freq(cd_new, var = TownSize) # MEAN REPLACE
+cd_new$TownSize[is.na(cd_new$JobCategory)] <- mode(cd_new$JobCategory)
+cd_new$TownSize[is.na(cd_new$HouseholdSize)] <- mean(cd_new$HouseholdSize)
+cd_new$TownSize[is.na(cd_new$HomeOwner)] <- mean(cd_new$HomeOwner)
+cd_new$TownSize[is.na(cd_new$CommuteTime)] <- mean(cd_new$CommuteTime)
+
+sapply(cd_new, function(x) sum(is.na(x)))
+which(colSums(is.na(cd_new))>0)
+
+cd3 <- cd2[!is.na(cd2$Gender),] ## 4967 obs
+sapply(cd3, function(x) sum(is.na(x)))
+
+cd4 <- cd3[!is.na(cd3$JobCategory),] # 4952 obs
+sapply(cd4, function(x) sum(is.na(x)))
+
+#####
+nona <- CD[complete.cases(CD),]
+#####
+
+
+# https://www.statology.org/impute-missing-values-in-r/
+
+df$col[is.na(df$col)] <- mean(df$col, na.rm=TRUE)
+
+for(i in 1:ncol(df)) {
+  df[ , i][is.na(df[ , i])] <- mean(df[ , i], na.rm=TRUE)
+}
 
 ```
 
@@ -243,6 +344,37 @@ summary(customer_data)
   #descrTable()
   #freq.poly()
   #dfSummary()
+
+```
+
+## Visualize
+
+```{r}
+
+#create histogram of values for price
+ggplot(data=diamonds, aes(x=price)) +
+  geom_histogram(fill="steelblue", color="black") +
+  ggtitle("Histogram of Price Values")
+
+#create scatterplot of carat vs. price, using cut as color variable
+ggplot(data=diamonds, aes(x=carat, y=price, color=cut)) + 
+  geom_point()
+
+#create scatterplot of price, grouped by cut
+ggplot(data=diamonds, aes(x=cut, y=price)) + 
+  geom_boxplot(fill="steelblue")
+
+```
+
+
+# Multivariate Analysis
+
+## Correlation Matrix
+
+```{r}
+
+#cor()
+round(cor(diamonds[c('carat', 'depth', 'table', 'price', 'x', 'y', 'z')]), 2)
 
 ```
 
