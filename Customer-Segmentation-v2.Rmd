@@ -214,6 +214,103 @@ newHH <- gsub(",","",as.character(newHH))
 newnumHH <- as.numeric(newHH)
 newnumHH
 
+#Create the function for the $ value column cleanup
+
+# Prototype that works
+
+Dollar_CleanUp <- function(data, 
+                           columns, 
+                           start, 
+                           end) {
+  result <- data
+    
+  for (col in columns) {
+    result[[col]] <-
+      str_sub(result[[col]], start = start, end = end)
+  }
+  return(result)
+}
+
+cusclean <- Dollar_CleanUp(customer_data,
+                           columns = c("HHIncome", "CarValue", "CardSpendMonth"),
+                           start = 2,
+                           end = -4)
+
+## VERSION TWO with gsub included
+
+
+DC2 <- function(data, 
+                           columns, 
+                           start, 
+                           end) {
+  result <- data
+    
+  for (col in columns) {
+    result[[col]] <-
+      str_sub(result[[col]], start = start, end = end)
+    result[[col]] <-
+      gsub(",","",as.character(result[[col]]))
+    result[[col]] <-
+      as.numeric(result[[col]])
+  }
+  return(result)
+}
+
+
+cc2 <- DC2(customer_data,
+                           columns = c("HHIncome", "CarValue", "CardSpendMonth","EquipmentLastMonth"),
+                           start = 2,
+                           end = -4)
+
+freq(cc2, var = HHIncome)
+freq(cc2, var = CarValue)
+freq(customer_data, var = CarValue)
+freq(cc2, var = CardSpendMonth)
+
+freq(cc2, var = EquipmentLastMonth)
+freq(customer_data, var = EquipmentLastMonth)
+
+
+
+# TEST IF THIS NA_SUMS actually works to generate sum of na's by column
+
+na_sums <- function(data, 
+                    columns) {
+  result <- data
+    
+  for (col in columns) {
+    result[[col]] <-
+      sum(is.na(data[[col]]))
+  }
+  return(result)
+}
+
+cussum <- na_sums(customer_data,
+                  c(""))
+
+
+freq(customer_data, var = Gender)
+freq(customer_data, var = Retired)
+
+customer_data$Gender <- ifelse(customer_data$Gender =="Male",1,0)
+customer_data$UnionMember <- ifelse(customer_data$UnionMember =="Yes",1,0)
+customer_data$Retired <- ifelse(customer_data$Retired =="Yes",1,0)
+
+cd1111 <- customer_data[,1]
+
+ToNumeric_Machine <- function(data,
+                              columns) {
+  for(col in columns) {
+    data[[col]] <-
+      as.numeric(as.character(data[[col]]))
+  }
+  return(data)
+}
+
+cus_to_numeric <- ToNumeric_Machine(customer_data,
+                                    c("HHIncome", "CarValue", "CardSpendMonth")) 
+
+
 nona <- transform(nona, HHIncome = as.numeric(HHIncome))
 summary(nona)[,0:14]
 
@@ -222,6 +319,13 @@ colnames(customer_data)[15:29]
 # [7] "NumberDogs"        "NumberBirds"       "HomeOwner"         "CarsOwned"         "CarOwnership"      "CarBrand"         
 # [13] "CarValue"          "CommuteTime"       "PoliticalPartyMem"
 summary(customer_data)[,15:29]
+
+should LoanDefault and MaritalStatus and CarOwnership and PoliticalPartyMem
+
+CarValue convert to numeric?
+  
+  
+
 
 colnames(customer_data)[30:44]
 #[1] "Votes"               "CreditCard"          "CardTenure"          "CardItemsMonthly"    "CardSpendMonth"     
@@ -246,6 +350,9 @@ summary(customer_data)[,45:60]
 CD <- customer_data[,c(1:14,16:60)]
 ## SKIP TO NONA
 nona <- CD[complete.cases(CD),]
+
+
+####    convert newly introduced NAs from trimming into 0s
 
 
 # Select all the rows with NAs as a subset of total dataset
